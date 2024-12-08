@@ -27,17 +27,20 @@ contract DarateOrganization {
 
     function donate(address _donator, uint256 _amountDonated) public {
         totalAmountRaised += _amountDonated;
-        donators.push(Donator({donator: _donator, amountDonated: _amountDonated}));
+        Donator memory donator = Donator({donator: _donator, amountDonated: _amountDonated});
+        donators.push(donator);
     }
 
     function addInvoiceId(string memory _invoiceId) public {
-        invoiceIds.push(Invoice({invoiceId: _invoiceId, paymentTxHash: ""}));
+        Invoice memory invoice = Invoice({invoiceId: _invoiceId, paymentTxHash: ""});
+        invoiceIds.push(invoice);
     }
 
-    function addPaymentTxHash(string memory _invoiceId, string memory _paymentTxHash) public {
+    function addPaymentTxHash(string memory _invoiceId, string memory _paymentTxHash, address _donator, uint256 _amount) public {
         for (uint256 i = 0; i < invoiceIds.length; i++) {
             if (keccak256(abi.encodePacked(invoiceIds[i].invoiceId)) == keccak256(abi.encodePacked(_invoiceId))) {
                 invoiceIds[i].paymentTxHash = _paymentTxHash;
+                donate(_donator, _amount);
                 break;
             }
         }

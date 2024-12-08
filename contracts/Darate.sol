@@ -63,8 +63,8 @@ contract Darate {
         userHasOrganization[msg.sender] = true;
     }
 
-    function getUserCampaigns() public view returns (Campaign[] memory) {
-        return userCampaigns[msg.sender];
+    function getUserCampaigns(address _user) public view returns (Campaign[] memory) {
+        return userCampaigns[_user];
     }
 
     function getUserOrganization() public view returns (address) {
